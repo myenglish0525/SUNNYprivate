@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>學生登入</title>
+  <script>
+    function checkLogin() {
+      const today = new Date();
+      const expiryDate = new Date(document.getElementById("expiry").value);
+      const task = document.getElementById("currentTask").value;
+      if (today > expiryDate) {
+        alert("⚠️ 您的帳號已到期，請聯絡老師續期！");
+        return false;
+      } else {
+        alert("✅ 登入成功！\n作答單元：" + task);
+        window.location.href = "index.html";
+        return false;
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>🔐 學生登入模擬</h2>
+  <form onsubmit="return checkLogin();">
+    <label>帳號：<input type="text" placeholder="輸入帳號" required></label><br><br>
+    <label>班級代碼：<input type="text" placeholder="如 A01" required></label><br><br>
+    <label>帳號到期日：<input type="date" id="expiry" required></label><br><br>
+    <label>目前作答題目：<input type="text" id="currentTask" placeholder="例如 Unit 1" required></label><br><br>
+    <button type="submit">登入</button>
+  </form>
+</body>
+</html>

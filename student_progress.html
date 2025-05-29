@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>學生作答畫面</title>
+  <script>
+    function loadStudent() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const name = urlParams.get('name');
+      const id = urlParams.get('id');
+      const unit = urlParams.get('unit');
+      const question = urlParams.get('question');
+      document.getElementById("studentInfo").innerText =
+        `👤 姓名：${name}\n🆔 編號：${id}\n📘 單元：${unit}\n📝 正在作答：${question}`;
+    }
+  </script>
+</head>
+<body onload="loadStudent()">
+  <h2>🎯 學生作答畫面</h2>
+  <pre id="studentInfo" style="font-size: 1.1em; background: #f4f4f4; padding: 1em; border: 1px solid #ccc;"></pre>
+  <p style="color: gray;">（此為模擬畫面，可加入即時答題或題庫接續功能）</p>
+</body>
+</html>

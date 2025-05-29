@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <title>學生登入</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>學生登入</h1>
+  <form id="loginForm">
+    <label>帳號： <input type="text" id="username" required /></label><br />
+    <label>班級代碼： <input type="text" id="classCode" required /></label><br />
+    <label>到期日： <input type="date" id="expiryDate" required /></label><br />
+    <button type="submit">登入</button>
+  </form>
+  <p id="loginError" class="error"></p>
+
+  <script src="script.js"></script>
+  <script>
+    initLogin(true);  // 啟用登入紀錄
+  </script>
+</body>
+</html>

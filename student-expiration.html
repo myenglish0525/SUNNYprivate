@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>學生到期管理</title>
+  <script>
+    function checkExpiry() {
+      const rows = document.querySelectorAll("table tr");
+      const today = new Date();
+      rows.forEach((row, index) => {
+        if (index === 0) return; // skip header
+        const expiryInput = row.querySelector(".expiry");
+        const statusCell = row.querySelector(".status");
+        if (expiryInput && statusCell) {
+          const expiryDate = new Date(expiryInput.value);
+          if (today > expiryDate) {
+            statusCell.textContent = "已到期";
+            statusCell.style.color = "red";
+          } else {
+            statusCell.textContent = "啟用中";
+            statusCell.style.color = "green";
+          }
+        }
+      });
+    }
+    window.onload = checkExpiry;
+  </script>
+</head>
+<body>
+  <h2>⏰ 學生到期日設定（自動檢查）</h2>
+  <table border="1" cellpadding="8">
+    <tr><th>帳號</th><th>姓名</th><th>班級</th><th>開始日</th><th>到期日</th><th>狀態</th></tr>
+    <tr>
+      <td>001</td><td>Mia</td><td>A01</td>
+      <td><input type="date" value="2024-05-01"></td>
+      <td><input type="date" class="expiry" value="2025-05-31"></td>
+      <td class="status"></td>
+    </tr>
+    <tr>
+      <td>002</td><td>Leo</td><td>A01</td>
+      <td><input type="date" value="2024-05-01"></td>
+      <td><input type="date" class="expiry" value="2025-01-01"></td>
+      <td class="status"></td>
+    </tr>
+  </table>
+</body>
+</html>

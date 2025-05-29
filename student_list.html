@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>學生清單</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    a { color: blue; text-decoration: none; }
+  </style>
+  <script>
+    const students = [
+      { name: "Kevin", id: "001", unit: "Unit 1", currentQuestion: "What's your name?" },
+      { name: "Mia", id: "002", unit: "Unit 2", currentQuestion: "This is my book." },
+      { name: "Lulu", id: "003", unit: "Unit 1", currentQuestion: "Nice to meet you." }
+    ];
+
+    function loadStudentList() {
+      const table = document.getElementById("studentTable");
+      students.forEach(student => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><a href="#" href="#" onclick="window.location.href='student_progress.html?name=' + encodeURIComponent(student.name) + '&id=' + student.id + '&unit=' + student.unit + '&question=' + encodeURIComponent(student.currentQuestion); return false;"('${student.name}', '${student.id}', '${student.unit}', '${student.currentQuestion}')">${student.name}</a></td>
+          <td>${student.id}</td>
+          <td>${student.unit}</td>
+        `;
+        table.appendChild(row);
+      });
+    }
+
+    function showDetail(name, id, unit, question) {
+      alert("學生：" + name + "\n編號：" + id + "\n目前單元：" + unit + "\n正在作答：" + question);
+    }
+
+    window.onload = loadStudentList;
+  </script>
+</head>
+<body>
+  <h2>📋 在線學生清單</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>學生姓名</th>
+        <th>編號</th>
+        <th>目前單元</th>
+      </tr>
+    </thead>
+    <tbody id="studentTable"></tbody>
+  </table>
+</body>
+</html>
