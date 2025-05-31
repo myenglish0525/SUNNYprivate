@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UNIT 1 Listening Test</title>
+  <style>
+    body { font-family: Arial; padding: 2em; line-height: 1.6; }
+    .question { display: none; margin-bottom: 2em; }
+    .options button { margin-right: 1em; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+    #result { display: none; font-size: 1.3em; margin-top: 2em; }
+  </style>
+</head>
+<body>
+
+<h2>🎧 UNIT 1 Listening Test</h2>
+<div id="quiz"></div>
+<div id="result"></div>
+
+<script>
+const questions = [
+  {
+    audio: "audio/U1-Q1.mp3",
+    correct: "What's your name?",
+    options: ["What's your name?", "Your name what?", "Is name what your?"]
+  },
+  {
+    audio: "audio/U1-Q2.mp3",
+    correct: "I am Kevin.",
+    options: ["Am I Kevin.", "Kevin I am.", "I am Kevin."]
+  },
+  {
+    audio: "audio/U1-Q3.mp3",
+    correct: "Nice to meet you.",
+    options: ["Nice to meet you.", "To meet nice you.", "Meet you nice."]
+  },
+  {
+    audio: "audio/U1-Q4.mp3",
+    correct: "Hello, Kevin.",
+    options: ["Hello, Kevin.", "Kevin Hello.", "Kevin, how are you?"]
+  },
+  {
+    audio: "audio/U1-Q5.mp3",
+    correct: "My name is Mia.",
+    options: ["Is name my Mia.", "My name is Mia.", "Name is Mia my."]
+  }
+];
+
+let shuffled = [], incorrect = [], current = 0, score = 0, redoMode = false;
+
+function shuffleArray(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+function renderQuestion(index) {
+  const q = shuffled[index];
+  const div = document.createElement("div");
+  div.className = "question";
+  div.id = "q" + index;
+
+  const audio = document.createElement("audio");
+  audio.src = q.audio;
+  audio.controls = true;
+  div.appendChild(audio);
+
+  const opts = document.createElement("div");
+  opts.className = "options";
+  shuffleArray(q.options).forEach(opt => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = () => handleAnswer(opt, q.correct, index);
+    opts.appendChild(btn);
+  });
+  div.appendChild(opts);
+  document.getElementById("quiz").appendChild(div);
+  div.style.display = "block";
+}
+
+function handleAnswer(answer, correct, index) {
+  const div = document.getElementById("q" + index);
+  div.querySelectorAll("button").forEach(btn => btn.disabled = true);
+  if (answer === correct) {
+    score++;
+    div.classList.add("correct");
+  } else {
+    incorrect.push(shuffled[index]);
+    div.classList.add("incorrect");
+  }
+  current++;
+  if (current < shuffled.length) {
+    renderQuestion(current);
+  } else if (!redoMode && incorrect.length > 0) {
+    shuffled = incorrect;
+    incorrect = [];
+    current = 0;
+    redoMode = true;
+    renderQuestion(current);
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById("result").style.display = "block";
+  if (score === 5) {
+    document.getElementById("result").innerHTML = "🎉 恭喜你完成 UNIT1 測驗！即將進入 UNIT2...";
+    setTimeout(() => {
+      window.location.href = "unit2.html";
+    }, 3000);
+  } else {
+    document.getElementById("result").innerHTML = "🔁 測驗完成，你得了 " + score + " 分。錯的題目已重新練習。";
+  }
+}
+
+function start() {
+  shuffled = shuffleArray([...questions]);
+  renderQuestion(current);
+}
+
+start();
+</script>
+
+</body>
+</html>
