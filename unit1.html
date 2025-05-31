@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UNIT1 Listening Test</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 30px; }
+    .question { margin-bottom: 40px; }
+    .score { margin-top: 20px; font-size: 18px; }
+    button { padding: 10px 20px; margin: 5px; }
+  </style>
+</head>
+<body>
+  <h1>🎧 UNIT1 Listening Test</h1>
+  <div id="quiz"></div>
+  <div class="score" id="score">Score: 0</div>
+
+  <script>
+    const questions = [
+      { id: "U1-Q1", audio: "audio/U1-Q1.mp3", choices: ["What's your name?", "Your name what?", "Is name what your?"], answer: 0 },
+      { id: "U1-Q2", audio: "audio/U1-Q2.mp3", choices: ["Am I Kevin.", "Kevin I am.", "I am Kevin."], answer: 2 },
+      { id: "U1-Q3", audio: "audio/U1-Q3.mp3", choices: ["Nice to meet you.", "To meet nice you.", "Meet you nice."], answer: 0 },
+      { id: "U1-Q4", audio: "audio/U1-Q4.mp3", choices: ["Hello, Kevin.", "Kevin Hello.", "Kevin, how are you?"], answer: 0 },
+      { id: "U1-Q5", audio: "audio/U1-Q5.mp3", choices: ["Is name my Mia.", "My name is Mia.", "Name is Mia my."], answer: 1 }
+    ];
+
+    let current = 0;
+    let score = 0;
+    const quizDiv = document.getElementById("quiz");
+
+    function renderQuestion() {
+      const q = questions[current];
+      quizDiv.innerHTML = `
+        <div class="question">
+          <p><b>Question ${current + 1}</b></p>
+          <audio controls autoplay src="${q.audio}"></audio><br><br>
+          ${q.choices.map((choice, i) => `<button onclick="checkAnswer(${i})">${choice}</button>`).join("<br>")}
+        </div>
+      `;
+    }
+
+    function checkAnswer(index) {
+      const correct = questions[current].answer;
+      if (index === correct) {
+        score += 20;
+        alert("✅ Correct!");
+        current++;
+        if (current < questions.length) {
+          renderQuestion();
+        } else {
+          quizDiv.innerHTML = `<h2>🎉 All questions completed!</h2>`;
+        }
+        document.getElementById("score").innerText = `Score: ${score}`;
+      } else {
+        alert("❌ Try again!");
+      }
+    }
+
+    renderQuestion();
+  </script>
+</body>
+</html>
