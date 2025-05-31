@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UNIT2 語音辨識</title>
+  <style>
+    body { font-family: Arial; padding: 20px; text-align: center; }
+    .question { font-size: 1.5em; margin: 20px 0; }
+    .result { font-weight: bold; margin-top: 10px; }
+    .hidden { display: none; }
+    button { font-size: 1.2em; padding: 10px 20px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>UNIT2 語音辨識練習</h1>
+  <div id="score">目前得分：0 分</div>
+  <div id="questionArea" class="question"></div>
+  <button onclick="startRecognition()">🎤 開始說話</button>
+  <button onclick="nextQuestion()">下一題</button>
+  <div class="result" id="resultArea"></div>
+
+  <script>
+    const questions = [
+      "What's your name?",
+      "I'm Kevin.",
+      "Nice to meet you.",
+      "My name is Mia.",
+      "Hello, Kevin.",
+      "Good morning."
+    ];
+
+    let current = 0;
+    let score = 0;
+    let wrongQuestions = [];
+
+    function showQuestion(index) {
+      document.getElementById("questionArea").innerText = questions[index];
+    }
+
+    function nextQuestion() {
+      if (current < questions.length - 1) {
+        current++;
+        showQuestion(current);
+        document.getElementById("resultArea").innerText = '';
+      } else if (wrongQuestions.length > 0) {
+        questions.splice(0, questions.length, ...wrongQuestions);
+        wrongQuestions = [];
+        current = 0;
+        alert("重做錯的題目！");
+        showQuestion(current);
+        document.getElementById("resultArea").innerText = '';
+      } else {
+        if (score >= 60) {
+          document.body.innerHTML = "<h2>🎉 恭喜你完成 UNIT2！</h2><a href='unit3.html'>👉 進入 UNIT3</a>";
+        } else {
+          alert("請重新挑戰，分數未達標！");
+          location.reload();
+        }
+      }
+    }
+
+    function startRecognition() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        const expected = questions[current];
+        const similarity = compare(transcript, expected);
+
+        if (similarity >= 0.8) {
+          document.getElementById("resultArea").innerText = "✅ 正確：" + transcript;
+          score += 10;
+          document.getElementById("score").innerText = "目前得分：" + score + " 分";
+        } else {
+          document.getElementById("resultArea").innerText = "❌ 錯誤：" + transcript;
+          wrongQuestions.push(expected);
+        }
+      };
+    }
+
+    function compare(str1, str2) {
+      str1 = str1.toLowerCase();
+      str2 = str2.toLowerCase();
+      const words1 = str1.split(" ");
+      const words2 = str2.split(" ");
+      const matchCount = words1.filter(word => words2.includes(word)).length;
+      return matchCount / words2.length;
+    }
+
+    // 初始化
+    showQuestion(current);
+  </script>
+</body>
+</html>
