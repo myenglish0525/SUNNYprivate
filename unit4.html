@@ -3,35 +3,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UNIT4 單字練習</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UNIT4 單字填空</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-    .question-box { display: none; margin-bottom: 20px; }
-    .question-box.active { display: block; }
-    .result { font-weight: bold; margin-top: 10px; }
-    .score { margin-bottom: 20px; font-size: 18px; }
-    button { margin-top: 10px; padding: 8px 12px; }
-    input { padding: 5px; width: 100%; margin-top: 8px; }
+    body { font-family: Arial; padding: 20px; background: #f2f2f2; }
+    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .question { font-size: 1.2em; margin-bottom: 10px; }
+    .translation { color: #555; margin-bottom: 10px; font-style: italic; }
+    input[type="text"] { padding: 8px; width: 200px; font-size: 1em; }
+    button { padding: 8px 16px; font-size: 1em; margin-top: 10px; }
+    .result { margin-top: 10px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h2>📘 UNIT4 單字練習（中翻英填空）</h2>
-  <div class="score">目前得分：<span id="score">0</span> 分</div>
-  <div id="quiz"></div>
+  <h1>UNIT4 單字填空練習</h1>
+  <div id="app"></div>
 
   <script>
-    const questions = [
-      { zh: "科學", en: "science" },
-      { zh: "體育", en: "PE" },
-      { zh: "上學", en: "go to school" },
-      { zh: "做功課", en: "do homework" },
-      { zh: "看書", en: "read books" },
-      { zh: "吃早餐", en: "eat breakfast" },
-      { zh: "玩電腦遊戲", en: "play computer games" },
-      { zh: "吃晚餐", en: "eat dinner" },
-      { zh: "看電視", en: "watch TV" },
-      { zh: "睡覺", en: "go to bed" }
+    let questions = [
+      { sentence: "I put my books in my ______.", answer: "schoolbag", translation: "我把書放進我的________。" },
+      { sentence: "I draw with a ______.", answer: "pencil", translation: "我用一支________畫畫。" },
+      { sentence: "I write with a blue ______.", answer: "pen", translation: "我用一支藍色的________寫字。" },
+      { sentence: "I use a ______ to draw straight lines.", answer: "ruler", translation: "我用________畫直線。" },
+      { sentence: "I make mistakes, so I use an ______.", answer: "eraser", translation: "我會寫錯字，所以我用________。" },
+      { sentence: "The teacher writes on the board with a ______.", answer: "marker", translation: "老師用________在白板上寫字。" },
+      { sentence: "I take notes in my ______.", answer: "notebook", translation: "我在________裡做筆記。" },
+      { sentence: "I color my picture with a ______.", answer: "crayon", translation: "我用________為畫上色。" },
     ];
 
     let current = 0;
@@ -39,59 +36,47 @@
     let wrongList = [];
 
     function renderQuestion(index) {
-      const container = document.getElementById("quiz");
-      container.innerHTML = "";
       const q = questions[index];
-      const box = document.createElement("div");
-      box.className = "question-box active";
-      box.innerHTML = `
-        <div>Q${index + 1}. 【中翻英】請寫出英文：<strong>${q.zh}</strong></div>
-        <input id="answer" type="text" autocomplete="off" />
-        <button onclick="checkAnswer('${q.en}', ${index})">送出</button>
-        <div class="result" id="result"></div>
+      document.getElementById("app").innerHTML = `
+        <div class="card">
+          <div class="question">(${index + 1}/8) ${q.sentence}</div>
+          <div class="translation">中譯：${q.translation}</div>
+          <input type="text" id="answerInput" placeholder="請輸入英文單字" />
+          <br/>
+          <button onclick="checkAnswer()">送出</button>
+          <div id="result" class="result"></div>
+        </div>
       `;
-      container.appendChild(box);
-      document.getElementById("answer").focus();
     }
 
-    function checkAnswer(correct, index) {
-      const input = document.getElementById("answer").value.trim().toLowerCase();
-      const answer = correct.toLowerCase();
-      const result = document.getElementById("result");
+    function checkAnswer() {
+      const userAns = document.getElementById("answerInput").value.trim().toLowerCase();
+      const correct = questions[current].answer.toLowerCase();
+      const resultDiv = document.getElementById("result");
 
-      if (input === answer) {
-        score += 10;
-        document.getElementById("score").innerText = score;
-        current++;
-        if (current < questions.length) {
-          renderQuestion(current);
-        } else {
-          if (wrongList.length > 0) {
-            questions.splice(0, questions.length, ...wrongList);
-            wrongList = [];
-            current = 0;
-            renderQuestion(current);
-          } else {
-            alert("🎉 恭喜你完成 UNIT4！即將前往 UNIT5...");
-            window.location.href = "unit5_sentences.html";
-          }
-        }
+      if (userAns === correct) {
+        resultDiv.innerHTML = "✅ 答對了！";
+        score += 20;
+        setTimeout(nextQuestion, 800);
       } else {
-        result.innerHTML = `❌ 錯誤，正確答案是：<span style="color: green;">${correct}</span>`;
-        if (!wrongList.includes(questions[index])) {
-          wrongList.push(questions[index]);
-        }
-        current++;
-        setTimeout(() => {
-          if (current < questions.length) {
-            renderQuestion(current);
-          } else {
-            questions.splice(0, questions.length, ...wrongList);
-            wrongList = [];
-            current = 0;
-            renderQuestion(current);
-          }
-        }, 2000);
+        resultDiv.innerHTML = `❌ 答錯了，正確答案是：${correct}`;
+        wrongList.push(current);
+        setTimeout(nextQuestion, 1200);
+      }
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        renderQuestion(current);
+      } else if (wrongList.length > 0) {
+        questions = wrongList.map(i => questions[i]);
+        current = 0;
+        wrongList = [];
+        alert("讓我們再挑戰錯的題目！");
+        renderQuestion(current);
+      } else {
+        document.getElementById("app").innerHTML = `<h2>🎉 恭喜你完成 UNIT4！總分：${score} 分</h2>`;
       }
     }
 
