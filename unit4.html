@@ -43,7 +43,7 @@
           <div class="score">目前得分：${score} / 160</div>
           <div class="question">${q.sentence}</div>
           <div class="translation">中譯：${q.translation}</div>
-          <input type="text" id="answerInput" placeholder="請輸入英文單字" />
+          <input type="text" id="answerInput" placeholder="請輸入英文單字" autocomplete="off" />
           <br/>
           <button onclick="checkAnswer()">送出</button>
           <div id="result" class="result"></div>
@@ -99,16 +99,6 @@
       current = 0;
       score = 0;
       wrongList = [];
-      questions = [
-        { sentence: "I put my books in my ______.", answer: "schoolbag", translation: "我把書放進我的書包。" },
-        { sentence: "I draw with a ______.", answer: "pencil", translation: "我用鉛筆畫畫。" },
-        { sentence: "I write with a blue ______.", answer: "pen", translation: "我用一支藍色的原子筆寫字。" },
-        { sentence: "I use a ______ to draw straight lines.", answer: "ruler", translation: "我用尺畫直線。" },
-        { sentence: "I make mistakes, so I use an ______.", answer: "eraser", translation: "我會寫錯字，所以我用橡皮擦。" },
-        { sentence: "The teacher writes on the board with a ______.", answer: "marker", translation: "老師用白板筆在白板上寫字。" },
-        { sentence: "I take notes in my ______.", answer: "notebook", translation: "我在筆記本裡做筆記。" },
-        { sentence: "I color my picture with a ______.", answer: "crayon", translation: "我用蠟筆為畫上色。" },
-      ];
       renderQuestion(current);
     }
 
