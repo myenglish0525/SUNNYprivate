@@ -6,30 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UNIT4 單字練習</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 700px; margin: auto; }
-    .question-box { display: none; margin-bottom: 25px; }
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    .question-box { display: none; margin-bottom: 20px; }
     .question-box.active { display: block; }
     .result { font-weight: bold; margin-top: 10px; }
     .score { margin-bottom: 20px; font-size: 18px; }
-    button { margin-top: 10px; padding: 8px 14px; }
-    input { padding: 8px; font-size: 16px; width: 100%; margin-top: 10px; }
+    button { margin-top: 10px; padding: 8px 12px; }
+    input { padding: 5px; width: 100%; margin-top: 8px; }
   </style>
 </head>
 <body>
   <h2>📘 UNIT4 單字練習（中翻英填空）</h2>
-  <div class="score">目前得分：<span id="score">0</span> 分 / 160</div>
+  <div class="score">目前得分：<span id="score">0</span> 分</div>
   <div id="quiz"></div>
 
   <script>
     const questions = [
       { zh: "科學", en: "science" },
       { zh: "體育", en: "PE" },
-      { zh: "看書", en: "read books" },
-      { zh: "睡覺", en: "go to bed" },
-      { zh: "吃晚餐", en: "eat dinner" },
-      { zh: "玩電腦遊戲", en: "play computer games" },
+      { zh: "上學", en: "go to school" },
       { zh: "做功課", en: "do homework" },
-      { zh: "看電視", en: "watch TV" }
+      { zh: "看書", en: "read books" },
+      { zh: "吃早餐", en: "eat breakfast" },
+      { zh: "玩電腦遊戲", en: "play computer games" },
+      { zh: "吃晚餐", en: "eat dinner" },
+      { zh: "看電視", en: "watch TV" },
+      { zh: "睡覺", en: "go to bed" }
     ];
 
     let current = 0;
@@ -58,7 +60,7 @@
       const result = document.getElementById("result");
 
       if (input === answer) {
-        score += 20;
+        score += 10;
         document.getElementById("score").innerText = score;
         current++;
         if (current < questions.length) {
