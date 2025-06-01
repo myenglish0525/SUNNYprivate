@@ -13,6 +13,7 @@
     input[type="text"] { padding: 8px; width: 200px; font-size: 1em; }
     button { padding: 8px 16px; font-size: 1em; margin-top: 10px; }
     .result { margin-top: 10px; font-weight: bold; }
+    .score { margin-bottom: 15px; font-size: 1.1em; color: green; }
   </style>
 </head>
 <body>
@@ -21,25 +22,27 @@
 
   <script>
     let questions = [
-      { sentence: "I put my books in my ______.", answer: "schoolbag", translation: "我把書放進我的________。" },
-      { sentence: "I draw with a ______.", answer: "pencil", translation: "我用一支________畫畫。" },
-      { sentence: "I write with a blue ______.", answer: "pen", translation: "我用一支藍色的________寫字。" },
-      { sentence: "I use a ______ to draw straight lines.", answer: "ruler", translation: "我用________畫直線。" },
-      { sentence: "I make mistakes, so I use an ______.", answer: "eraser", translation: "我會寫錯字，所以我用________。" },
-      { sentence: "The teacher writes on the board with a ______.", answer: "marker", translation: "老師用________在白板上寫字。" },
-      { sentence: "I take notes in my ______.", answer: "notebook", translation: "我在________裡做筆記。" },
-      { sentence: "I color my picture with a ______.", answer: "crayon", translation: "我用________為畫上色。" },
+      { sentence: "I put my books in my ______.", answer: "schoolbag", translation: "我把書放進我的書包。" },
+      { sentence: "I draw with a ______.", answer: "pencil", translation: "我用鉛筆畫畫。" },
+      { sentence: "I write with a blue ______.", answer: "pen", translation: "我用一支藍色的原子筆寫字。" },
+      { sentence: "I use a ______ to draw straight lines.", answer: "ruler", translation: "我用尺畫直線。" },
+      { sentence: "I make mistakes, so I use an ______.", answer: "eraser", translation: "我會寫錯字，所以我用橡皮擦。" },
+      { sentence: "The teacher writes on the board with a ______.", answer: "marker", translation: "老師用白板筆在白板上寫字。" },
+      { sentence: "I take notes in my ______.", answer: "notebook", translation: "我在筆記本裡做筆記。" },
+      { sentence: "I color my picture with a ______.", answer: "crayon", translation: "我用蠟筆為畫上色。" },
     ];
 
     let current = 0;
     let score = 0;
     let wrongList = [];
+    let totalAnswered = 0;
 
     function renderQuestion(index) {
       const q = questions[index];
       document.getElementById("app").innerHTML = `
         <div class="card">
-          <div class="question">(${index + 1}/8) ${q.sentence}</div>
+          <div class="score">目前得分：${score} / 160</div>
+          <div class="question">(${index + 1}/${questions.length}) ${q.sentence}</div>
           <div class="translation">中譯：${q.translation}</div>
           <input type="text" id="answerInput" placeholder="請輸入英文單字" />
           <br/>
@@ -54,13 +57,14 @@
       const correct = questions[current].answer.toLowerCase();
       const resultDiv = document.getElementById("result");
 
+      totalAnswered++;
       if (userAns === correct) {
         resultDiv.innerHTML = "✅ 答對了！";
         score += 20;
         setTimeout(nextQuestion, 800);
       } else {
         resultDiv.innerHTML = `❌ 答錯了，正確答案是：${correct}`;
-        wrongList.push(current);
+        wrongList.push(questions[current]);
         setTimeout(nextQuestion, 1200);
       }
     }
@@ -70,14 +74,45 @@
       if (current < questions.length) {
         renderQuestion(current);
       } else if (wrongList.length > 0) {
-        questions = wrongList.map(i => questions[i]);
-        current = 0;
+        questions = [...wrongList];
         wrongList = [];
-        alert("讓我們再挑戰錯的題目！");
+        current = 0;
+        alert("讓我們再挑戰剛才答錯的題目！");
         renderQuestion(current);
       } else {
-        document.getElementById("app").innerHTML = `<h2>🎉 恭喜你完成 UNIT4！總分：${score} 分</h2>`;
+        if (score >= 160) {
+          document.getElementById("app").innerHTML = `
+            <h2>🎉 恭喜你完成 UNIT4！總分：${score} 分</h2>
+            <p>將自動前往 UNIT5 ...</p>
+          `;
+          setTimeout(() => {
+            window.location.href = "unit5.html";
+          }, 2000);
+        } else {
+          document.getElementById("app").innerHTML = `
+            <h2>總分：${score} 分</h2>
+            <p>尚未滿分，請重新挑戰錯題！</p>
+            <button onclick="restart()">重新挑戰</button>
+          `;
+        }
       }
+    }
+
+    function restart() {
+      current = 0;
+      score = 0;
+      wrongList = [];
+      questions = [
+        { sentence: "I put my books in my ______.", answer: "schoolbag", translation: "我把書放進我的書包。" },
+        { sentence: "I draw with a ______.", answer: "pencil", translation: "我用鉛筆畫畫。" },
+        { sentence: "I write with a blue ______.", answer: "pen", translation: "我用一支藍色的原子筆寫字。" },
+        { sentence: "I use a ______ to draw straight lines.", answer: "ruler", translation: "我用尺畫直線。" },
+        { sentence: "I make mistakes, so I use an ______.", answer: "eraser", translation: "我會寫錯字，所以我用橡皮擦。" },
+        { sentence: "The teacher writes on the board with a ______.", answer: "marker", translation: "老師用白板筆在白板上寫字。" },
+        { sentence: "I take notes in my ______.", answer: "notebook", translation: "我在筆記本裡做筆記。" },
+        { sentence: "I color my picture with a ______.", answer: "crayon", translation: "我用蠟筆為畫上色。" },
+      ];
+      renderQuestion(current);
     }
 
     renderQuestion(current);
