@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UNIT4 單字填空</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f2f2f2; }
+    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .question { font-size: 1.2em; margin-bottom: 10px; }
+    .translation { color: #555; margin-bottom: 10px; font-style: italic; }
+    input[type="text"] { padding: 8px; width: 200px; font-size: 1em; }
+    button { padding: 8px 16px; font-size: 1em; margin-top: 10px; }
+    .result { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>UNIT4 單字填空練習</h1>
+  <div id="app"></div>
+
+  <script>
+    let questions = [
+      { sentence: "I put my books in my ______.", answer: "schoolbag", translation: "我把書放進我的________。" },
+      { sentence: "I draw with a ______.", answer: "pencil", translation: "我用一支________畫畫。" },
+      { sentence: "I write with a blue ______.", answer: "pen", translation: "我用一支藍色的________寫字。" },
+      { sentence: "I use a ______ to draw straight lines.", answer: "ruler", translation: "我用________畫直線。" },
+      { sentence: "I make mistakes, so I use an ______.", answer: "eraser", translation: "我會寫錯字，所以我用________。" },
+      { sentence: "The teacher writes on the board with a ______.", answer: "marker", translation: "老師用________在白板上寫字。" },
+      { sentence: "I take notes in my ______.", answer: "notebook", translation: "我在________裡做筆記。" },
+      { sentence: "I color my picture with a ______.", answer: "crayon", translation: "我用________為畫上色。" },
+    ];
+
+    let current = 0;
+    let score = 0;
+    let wrongList = [];
+
+    function renderQuestion(index) {
+      const q = questions[index];
+      document.getElementById("app").innerHTML = `
+        <div class="card">
+          <div class="question">(${index + 1}/8) ${q.sentence}</div>
+          <div class="translation">中譯：${q.translation}</div>
+          <input type="text" id="answerInput" placeholder="請輸入英文單字" />
+          <br/>
+          <button onclick="checkAnswer()">送出</button>
+          <div id="result" class="result"></div>
+        </div>
+      `;
+    }
+
+    function checkAnswer() {
+      const userAns = document.getElementById("answerInput").value.trim().toLowerCase();
+      const correct = questions[current].answer.toLowerCase();
+      const resultDiv = document.getElementById("result");
+
+      if (userAns === correct) {
+        resultDiv.innerHTML = "✅ 答對了！";
+        score += 20;
+        setTimeout(nextQuestion, 800);
+      } else {
+        resultDiv.innerHTML = `❌ 答錯了，正確答案是：${correct}`;
+        wrongList.push(current);
+        setTimeout(nextQuestion, 1200);
+      }
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        renderQuestion(current);
+      } else if (wrongList.length > 0) {
+        questions = wrongList.map(i => questions[i]);
+        current = 0;
+        wrongList = [];
+        alert("讓我們再挑戰錯的題目！");
+        renderQuestion(current);
+      } else {
+        document.getElementById("app").innerHTML = `<h2>🎉 恭喜你完成 UNIT4！總分：${score} 分</h2>`;
+      }
+    }
+
+    renderQuestion(current);
+  </script>
+</body>
+</html>
