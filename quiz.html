@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quiz Practice</title>
+  <style>
+    body { font-family: Arial; margin: 2em; background: #f9f9f9; }
+    h2 { color: #333; }
+    .question-box { margin: 1em 0; }
+    .options button {
+      margin: 0.3em;
+      padding: 0.5em 1em;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+    }
+    .options button.correct { background: #b0e6b0; }
+    .options button.wrong { background: #f5b5b5; }
+    #scoreBox { font-weight: bold; margin-top: 2em; color: green; }
+  </style>
+</head>
+<body>
+  <h2>🌟 Quiz Practice</h2>
+  <div id="quiz"></div>
+  <div id="scoreBox"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const unit = urlParams.get('unit') || 'unit1';
+    let current = 0, score = 0, questions = [];
+
+    fetch('questions.json')
+      .then(res => res.json())
+      .then(data => {
+        questions = data[unit];
+        if (!questions) {
+          document.getElementById('quiz').innerHTML = '<p>⚠️ 找不到該單元題目</p>';
+          return;
+        }
+        renderQuestion();
+      });
+
+    function renderQuestion() {
+      const q = questions[current];
+      const html = `
+        <div class="question-box">
+          <p><strong>Q${current + 1}:</strong> ${q.question}</p>
+          <div class="options">
+            ${q.options.map(option => `<button onclick="checkAnswer(this, '${option.replace(/'/g, "\'")}')">${option}</button>`).join('')}
+          </div>
+        </div>`;
+      document.getElementById('quiz').innerHTML = html;
+    }
+
+    function checkAnswer(button, answer) {
+      const correct = questions[current].answer;
+      const buttons = document.querySelectorAll('.options button');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === correct) btn.classList.add('correct');
+        else if (btn.textContent === answer) btn.classList.add('wrong');
+      });
+
+      if (answer === correct) score += 10;
+      current++;
+      setTimeout(() => {
+        if (current < questions.length) renderQuestion();
+        else {
+          document.getElementById('quiz').innerHTML = '';
+          document.getElementById('scoreBox').textContent = `✅ 全部完成！你的得分是：${score} 分`;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
