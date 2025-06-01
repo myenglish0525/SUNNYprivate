@@ -1,0 +1,92 @@
+{
+  "unit1": [
+    {
+      "question": "What's your name?",
+      "options": [
+        "What's your name?",
+        "Your name what?",
+        "Is name what your?"
+      ],
+      "answer": "What's your name?"
+    },
+    {
+      "question": "I'm Kevin.",
+      "options": [
+        "Kevin I'm.",
+        "I'm Kevin.",
+        "Am Kevin I."
+      ],
+      "answer": "I'm Kevin."
+    }
+  ],
+  "unit2": [
+    {
+      "question": "Nice to meet you.",
+      "options": [
+        "Meet you nice to.",
+        "Nice to meet you.",
+        "To nice meet you."
+      ],
+      "answer": "Nice to meet you."
+    }
+  ],
+  "unit3": [
+    {
+      "question": "My name is Mia.",
+      "options": [
+        "Mia name is my.",
+        "My name is Mia.",
+        "Name is Mia my."
+      ],
+      "answer": "My name is Mia."
+    }
+  ],
+  "unit4": [
+    {
+      "question": "I put my books in my ______.",
+      "answer": "schoolbag",
+      "translation": "我把書放進我的書包。"
+    },
+    {
+      "question": "I draw with a ______.",
+      "answer": "pencil",
+      "translation": "我用一支鉛筆畫畫。"
+    },
+    {
+      "question": "I write with a blue ______.",
+      "answer": "pen",
+      "translation": "我用一支藍色的筆寫字。"
+    },
+    {
+      "question": "I use a ______ to draw straight lines.",
+      "answer": "ruler",
+      "translation": "我用直尺畫線。"
+    },
+    {
+      "question": "I make mistakes, so I use an ______.",
+      "answer": "eraser",
+      "translation": "我會寫錯字，所以我用橡皮擦。"
+    },
+    {
+      "question": "The teacher writes on the board with a ______.",
+      "answer": "marker",
+      "translation": "老師用白板筆在白板上寫字。"
+    },
+    {
+      "question": "I take notes in my ______.",
+      "answer": "notebook",
+      "translation": "我在筆記本裡做筆記。"
+    }
+  ],
+  "unit5": [
+    {
+      "question": "Where is your school bag?",
+      "options": [
+        "It's on the desk.",
+        "It's under the bed.",
+        "It's in the box."
+      ],
+      "answer": "It's on the desk."
+    }
+  ]
+}
