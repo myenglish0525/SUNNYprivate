@@ -1,11 +1,94 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>Unit 6 - Dialogue Fill-in</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unit 6 練習</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .question { margin-bottom: 20px; }
+    .btn { margin-top: 10px; }
+  </style>
 </head>
 <body>
-  <h1>Unit 6 - Dialogue Fill-in</h1>
-  <div id="quiz-container">（此處為互動題目，已套用 reset_retry_clean PLUS 模式，並移除總分顯示）</div>
+  <h1>Unit 6 練習：情境對話填空</h1>
+  <div id="quiz-container"></div>
+  <div id="score-container" style="display:none;"></div>
+  <script>
+    const questions = [
+      {
+        id: "Q1",
+        sentence: "Hello, ____. How are you?",
+        answer: "Mia"
+      },
+      {
+        id: "Q2",
+        sentence: "I’m fine, ____. And you?",
+        answer: "thanks"
+      },
+      {
+        id: "Q3",
+        sentence: "What’s your ____?",
+        answer: "name"
+      },
+      {
+        id: "Q4",
+        sentence: "My name is ____. Nice to meet you.",
+        answer: "Kevin"
+      },
+      {
+        id: "Q5",
+        sentence: "Nice to meet ____, too.",
+        answer: "you"
+      },
+      {
+        id: "Q6",
+        sentence: "Good ____, Mia.",
+        answer: "morning"
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let wrong = [];
+
+    function showQuestion(index) {
+      const q = questions[index];
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = `
+        <div class="question">
+          <p>${q.sentence.replace("____", '<input type="text" id="answer-input" />')}</p>
+          <button onclick="submitAnswer()">送出</button>
+        </div>
+      `;
+    }
+
+    function submitAnswer() {
+      const input = document.getElementById("answer-input").value.trim();
+      const correct = questions[currentIndex].answer;
+      if (input.toLowerCase() === correct.toLowerCase()) {
+        score += 20;
+      } else {
+        wrong.push(questions[currentIndex]);
+      }
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        showQuestion(currentIndex);
+      } else {
+        if (wrong.length > 0) {
+          questions.length = 0;
+          questions.push(...wrong);
+          currentIndex = 0;
+          wrong = [];
+          showQuestion(currentIndex);
+        } else {
+          document.getElementById("quiz-container").innerHTML = `<h2>🎉 恭喜你完成 UNIT6！</h2>`;
+        }
+      }
+    }
+
+    window.onload = () => showQuestion(currentIndex);
+  </script>
 </body>
 </html>
