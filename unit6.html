@@ -6,89 +6,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Unit 6 練習</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    .question { margin-bottom: 20px; }
-    .btn { margin-top: 10px; }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    .question-box { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px #ccc; margin-bottom: 20px; }
+    input[type="text"] { padding: 8px; width: 200px; font-size: 16px; }
+    button { padding: 8px 16px; font-size: 16px; margin-top: 10px; }
+    #score { font-weight: bold; font-size: 18px; margin-bottom: 20px; }
   </style>
 </head>
 <body>
-  <h1>Unit 6 練習：情境對話填空</h1>
-  <div id="quiz-container"></div>
-  <div id="score-container" style="display:none;"></div>
+  <h1>Unit 6：情境對話填空</h1>
+  <div id="score">目前得分：0 分</div>
+  <div id="quiz-container" class="question-box"></div>
+
   <script>
-    const questions = [
-      {
-        id: "Q1",
-        sentence: "Hello, ____. How are you?",
-        answer: "Mia"
-      },
-      {
-        id: "Q2",
-        sentence: "I’m fine, ____. And you?",
-        answer: "thanks"
-      },
-      {
-        id: "Q3",
-        sentence: "What’s your ____?",
-        answer: "name"
-      },
-      {
-        id: "Q4",
-        sentence: "My name is ____. Nice to meet you.",
-        answer: "Kevin"
-      },
-      {
-        id: "Q5",
-        sentence: "Nice to meet ____, too.",
-        answer: "you"
-      },
-      {
-        id: "Q6",
-        sentence: "Good ____, Mia.",
-        answer: "morning"
-      }
+    const originalQuestions = [
+      { id: "Q1", sentence: "Hello, _____. How are you?", answer: "Mia" },
+      { id: "Q2", sentence: "I’m fine, _____. And you?", answer: "thanks" },
+      { id: "Q3", sentence: "What’s your _____?", answer: "name" },
+      { id: "Q4", sentence: "My name is _____. Nice to meet you.", answer: "Kevin" },
+      { id: "Q5", sentence: "Nice to meet _____, too.", answer: "you" },
+      { id: "Q6", sentence: "Good _____, Mia.", answer: "morning" }
     ];
 
-    let currentIndex = 0;
+    let questions = [];
+    let current = 0;
     let score = 0;
-    let wrong = [];
+    let wrongList = [];
 
-    function showQuestion(index) {
-      const q = questions[index];
-      const container = document.getElementById("quiz-container");
-      container.innerHTML = `
-        <div class="question">
-          <p>${q.sentence.replace("____", '<input type="text" id="answer-input" />')}</p>
-          <button onclick="submitAnswer()">送出</button>
-        </div>
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function startQuiz() {
+      questions = [...originalQuestions];
+      shuffle(questions);
+      current = 0;
+      score = 0;
+      wrongList = [];
+      document.getElementById("score").innerText = "目前得分：0 分";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById("quiz-container").innerHTML = `
+        <p>${q.sentence.replace("_____", '<input type="text" id="answer" />')}</p>
+        <button onclick="checkAnswer()">送出</button>
+        <div id="feedback"></div>
       `;
     }
 
-    function submitAnswer() {
-      const input = document.getElementById("answer-input").value.trim();
-      const correct = questions[currentIndex].answer;
-      if (input.toLowerCase() === correct.toLowerCase()) {
+    function checkAnswer() {
+      const userInput = document.getElementById("answer").value.trim().toLowerCase();
+      const correct = questions[current].answer.toLowerCase();
+      let isCorrect = false;
+      let feedback = "";
+
+      if (userInput === correct) {
         score += 20;
+        isCorrect = true;
+        feedback = "<p style='color:green;'>✔ 正確！</p>";
       } else {
-        wrong.push(questions[currentIndex]);
+        feedback = `<p style='color:red;'>✘ 錯誤，正確答案是：<strong>${questions[current].answer}</strong></p>`;
+        wrongList.push(questions[current]);
       }
-      currentIndex++;
-      if (currentIndex < questions.length) {
-        showQuestion(currentIndex);
-      } else {
-        if (wrong.length > 0) {
-          questions.length = 0;
-          questions.push(...wrong);
-          currentIndex = 0;
-          wrong = [];
-          showQuestion(currentIndex);
+
+      document.getElementById("feedback").innerHTML = feedback;
+      document.getElementById("score").innerText = `目前得分：${score} 分`;
+
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "下一題";
+      nextBtn.onclick = () => {
+        current++;
+        if (current < questions.length) {
+          showQuestion();
         } else {
-          document.getElementById("quiz-container").innerHTML = `<h2>🎉 恭喜你完成 UNIT6！</h2>`;
+          if (wrongList.length > 0) {
+            questions = [...wrongList];
+            shuffle(questions);
+            current = 0;
+            wrongList = [];
+            showQuestion();
+          } else {
+            document.getElementById("quiz-container").innerHTML = "<h2>🎉 恭喜你完成 UNIT6！</h2>";
+          }
         }
-      }
+      };
+      document.getElementById("quiz-container").appendChild(nextBtn);
     }
 
-    window.onload = () => showQuestion(currentIndex);
+    window.onload = startQuiz;
   </script>
 </body>
 </html>
