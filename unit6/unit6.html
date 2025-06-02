@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unit 6 - Dialogue Fill-in</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .question { margin-bottom: 20px; }
+    .choices button { margin: 5px; }
+    #result { margin-top: 20px; font-weight: bold; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Unit 6 - Dialogue Fill-in</h1>
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+  <script>
+    const questions = [
+      {
+        text: "A: Hi, Kevin! B: ______, Mia!",
+        correct: "Hello",
+        options: ["Hello", "Hi", "Good"],
+        hint: "和對方打招呼要用哪個詞？"
+      },
+      {
+        text: "A: What's your name? B: ______ Kevin.",
+        correct: "I'm",
+        options: ["I'm", "I", "Me"],
+        hint: "自我介紹時要用哪個縮寫？"
+      },
+      {
+        text: "A: Nice to ______ you.",
+        correct: "meet",
+        options: ["see", "meet", "look"],
+        hint: "第一次見面時的禮貌用語是？"
+      },
+      {
+        text: "A: ______ morning, everyone!",
+        correct: "Good",
+        options: ["Good", "Nice", "Fine"],
+        hint: "早上打招呼的常用開頭是？"
+      },
+      {
+        text: "A: ______ your teacher.",
+        correct: "She's",
+        options: ["She", "Her", "She's"],
+        hint: "要介紹「她是」時用哪個字？"
+      },
+      {
+        text: "A: Are you a student? B: Yes, ______ am.",
+        correct: "I",
+        options: ["I", "Me", "You"],
+        hint: "肯定回答自己時的主詞是？"
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let wrong = [];
+
+    const container = document.getElementById("quiz-container");
+    const result = document.getElementById("result");
+
+    function showQuestion(idx) {
+      const q = questions[idx];
+      container.innerHTML = `
+        <div class="question">
+          <p><strong>Q${idx + 1}:</strong> ${q.text}</p>
+          <p><em>提示：${q.hint}</em></p>
+          <div class="choices">
+            ${q.options.map(option => `<button onclick="checkAnswer('${option}')">${option}</button>`).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkAnswer(selected) {
+      const q = questions[current];
+      if (selected === q.correct) {
+        score += 20;
+        result.textContent = "✅ 答對！請按「下一題」";
+        container.innerHTML += '<button onclick="nextQuestion()">下一題</button>';
+      } else {
+        result.textContent = `❌ 錯誤，正確答案是：${q.correct}`;
+        container.innerHTML += '<button onclick="nextQuestion()">下一題</button>';
+        wrong.push(current);
+      }
+    }
+
+    function nextQuestion() {
+      current++;
+      result.textContent = "";
+      if (current < questions.length) {
+        showQuestion(current);
+      } else {
+        if (wrong.length === 0) {
+          container.innerHTML = `<h2>🎉 全部答對！總分 ${score} 分</h2>`;
+        } else {
+          container.innerHTML = "<h3>你有錯題，請重新挑戰錯題：</h3>";
+          current = 0;
+          score = 0;
+          questions.splice(0, questions.length, ...wrong.map(i => questions[i]));
+          wrong = [];
+          showQuestion(current);
+        }
+      }
+    }
+
+    showQuestion(current);
+  </script>
+</body>
+</html>
