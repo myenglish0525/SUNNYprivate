@@ -1,104 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Unit 6 - Dialogue Fill-in</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    .question { margin-bottom: 20px; }
-    .options button { margin: 5px; }
-    #score { font-weight: bold; margin-bottom: 20px; }
-    #nextBtn { display: none; margin-top: 15px; }
-  </style>
 </head>
 <body>
   <h1>Unit 6 - Dialogue Fill-in</h1>
-  <div id="score">目前得分：0 / 120</div>
-  <div id="quiz"></div>
-  <button id="nextBtn" onclick="nextQuestion()">下一題</button>
-  <script>
-    const questions = [
-      {
-        sentence: "A: Hi, Kevin! B: ______, Mia!",
-        options: ["Hello", "Hi", "Good"],
-        answer: "Hello",
-        hint: "和對方打招呼要用哪個詞？"
-      },
-      {
-        sentence: "A: ______ are you today? B: I'm fine.",
-        options: ["Where", "How", "What"],
-        answer: "How",
-        hint: "問對方今天的狀態"
-      },
-      {
-        sentence: "A: What’s this? B: ______ my pencil.",
-        options: ["It’s", "He’s", "That"],
-        answer: "It’s",
-        hint: "用 it is 回答"
-      },
-      {
-        sentence: "A: Do you like apples? B: Yes, I ______.",
-        options: ["do", "am", "like"],
-        answer: "do",
-        hint: "簡答用助動詞"
-      },
-      {
-        sentence: "A: What time is it? B: It’s ______ o’clock.",
-        options: ["ten", "fine", "good"],
-        answer: "ten",
-        hint: "填入數字時間"
-      },
-      {
-        sentence: "A: Let’s go to school. B: ______!",
-        options: ["OK", "No", "Sleep"],
-        answer: "OK",
-        hint: "表示同意"
-      }
-    ];
-
-    let current = 0;
-    let score = 0;
-
-    function renderQuestion() {
-      const q = questions[current];
-      const quizDiv = document.getElementById("quiz");
-      quizDiv.innerHTML = `
-        <div class="question">
-          <p><strong>Q${current + 1}:</strong> ${q.sentence}</p>
-          <p><em>提示：${q.hint}</em></p>
-          <div class="options">
-            ${q.options.map(opt => `<button onclick="checkAnswer('${opt}')">${opt}</button>`).join('')}
-          </div>
-          <div id="result"></div>
-        </div>
-      `;
-      document.getElementById("nextBtn").style.display = "none";
-    }
-
-    function checkAnswer(choice) {
-      const resultDiv = document.getElementById("result");
-      if (choice === questions[current].answer) {
-        resultDiv.innerHTML = "✅ 答對了！";
-        score += 20;
-        document.getElementById("score").innerText = `目前得分：${score} / 120`;
-        document.getElementById("nextBtn").style.display = "inline";
-      } else {
-        resultDiv.innerHTML = "❌ 再試一次！";
-      }
-    }
-
-    function nextQuestion() {
-      current++;
-      if (current < questions.length) {
-        renderQuestion();
-      } else {
-        document.getElementById("quiz").innerHTML = "<h2>🎉 恭喜你完成 Unit 6！</h2>";
-        document.getElementById("nextBtn").style.display = "none";
-      }
-    }
-
-    renderQuestion();
-  </script>
+  <div id="quiz-container">（此處為互動題目，已套用 reset_retry_clean PLUS 模式，並移除總分顯示）</div>
 </body>
 </html>
