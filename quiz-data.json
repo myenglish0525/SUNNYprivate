@@ -11,7 +11,7 @@
     "totalScore": 100
   },
   {
-    "unit": "U2",
+    "unit": "U1",
     "audio": "audio/02.mp3",
     "choices": [
       "A. How are you today?",
@@ -19,17 +19,17 @@
       "C. What time is it?"
     ],
     "answer": 1,
-    "totalScore": 80
+    "totalScore": 100
   },
   {
-    "unit": "U3",
-    "audio": "audio/03.mp3",
+    "unit": "U2",
+    "audio": "audio/u2-01.mp3",
     "choices": [
-      "A. This is my teacher.",
-      "B. That is my dog.",
-      "C. This is my friend Adam."
+      "A. Yes, I am.",
+      "B. No, thank you.",
+      "C. Maybe later."
     ],
-    "answer": 2,
-    "totalScore": 120
+    "answer": 0,
+    "totalScore": 80
   }
 ]
