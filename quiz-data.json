@@ -1,0 +1,35 @@
+[
+  {
+    "unit": "U1",
+    "audio": "audio/01.mp3",
+    "choices": [
+      "A. Are you OK?",
+      "B. What's your name?",
+      "C. Where do you live?"
+    ],
+    "answer": 1,
+    "totalScore": 100
+  },
+  {
+    "unit": "U2",
+    "audio": "audio/02.mp3",
+    "choices": [
+      "A. How are you today?",
+      "B. How old are you?",
+      "C. What time is it?"
+    ],
+    "answer": 1,
+    "totalScore": 80
+  },
+  {
+    "unit": "U3",
+    "audio": "audio/03.mp3",
+    "choices": [
+      "A. This is my teacher.",
+      "B. That is my dog.",
+      "C. This is my friend Adam."
+    ],
+    "answer": 2,
+    "totalScore": 120
+  }
+]
