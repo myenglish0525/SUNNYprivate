@@ -2,12 +2,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Quiz Unit</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Listening Quiz</title>
 </head>
 <body>
   <h1>Welcome to the Listening Quiz</h1>
-  <div id="quiz"></div>
-  <script src="quiz-data.json" type="application/json"></script>
+  <div id="quiz-container"></div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const unit = urlParams.get('unit');
+    fetch('quiz-data.json')
+      .then(response => response.json())
+      .then(data => {
+        const unitData = data.filter(q => q.unit === unit);
+        if (unitData.length === 0) {
+          document.getElementById('quiz-container').innerHTML = '<p>No questions found for this unit.</p>';
+          return;
+        }
+
+        let current = 0;
+        let score = 0;
+
+        function renderQuestion() {
+          const q = unitData[current];
+          const container = document.getElementById('quiz-container');
+          container.innerHTML = `
+            <p><strong>Question ${current + 1}</strong></p>
+            <audio controls src="\${q.audio}"></audio>
+            <form id="form">
+              \${q.choices.map((c, i) => `
+                <div>
+                  <label>
+                    <input type="radio" name="choice" value="\${i}" />
+                    \${c}
+                  </label>
+                </div>
+              `).join('')}
+              <button type="submit">Submit</button>
+            </form>
+          `;
+
+          document.getElementById('form').onsubmit = function(e) {
+            e.preventDefault();
+            const selected = document.querySelector('input[name="choice"]:checked');
+            if (!selected) return alert('Please select an answer!');
+            if (parseInt(selected.value) === q.answer) {
+              score += q.totalScore;
+            }
+            current++;
+            if (current < unitData.length) {
+              renderQuestion();
+            } else {
+              container.innerHTML = '<h2>Quiz Complete</h2><p>Your score: ' + score + '</p>';
+            }
+          };
+        }
+
+        renderQuestion();
+      })
+      .catch(error => {
+        console.error('Error loading quiz data:', error);
+        document.getElementById('quiz-container').innerHTML = '<p>Error loading quiz data.</p>';
+      });
+  </script>
 </body>
 </html>
