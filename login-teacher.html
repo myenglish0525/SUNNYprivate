@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>老師登入</title></head>
+<body>
+<h2>老師登入</h2>
+<form action="admin-dashboard.html" method="GET" onsubmit="return loginCheck()">
+  帳號：<input type="text" id="user"><br>
+  密碼：<input type="password" id="pass"><br>
+  <button type="submit">登入</button>
+</form>
+<script>
+function loginCheck() {
+  const u = document.getElementById('user').value;
+  const p = document.getElementById('pass').value;
+  if (u === 'admin' && p === 'sunnyenglish') return true;
+  alert('帳號或密碼錯誤'); return false;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>學生登入</title></head>
+<body>
+<h2>學生登入</h2>
+<form action="unit1.html" method="GET" onsubmit="return checkLogin()">
+  班級代碼：<input type="text" id="class"><br>
+  學號（如001）：<input type="text" id="no"><br>
+  <button type="submit">開始作答</button>
+</form>
+<script>
+function checkLogin() {
+  const c = document.getElementById('class').value.trim().toUpperCase();
+  const n = document.getElementById('no').value.trim();
+  if (c === 'A01' && Number(n) >= 1 && Number(n) <= 10) return true;
+  alert('無效班級或學號'); return false;
+}
+</script>
+</body>
+</html>
